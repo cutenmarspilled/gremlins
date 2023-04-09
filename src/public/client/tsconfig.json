@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig-base.json",
+  "compilerOptions": {
+    "module": "es2020",
+    "outDir": "../../../dist/public/client",
+    "rootDir": ".",
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../core"
+    }
+  ]
+}

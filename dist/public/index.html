@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>gremlins</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/toggle.css">
+    <link rel="icon" type="image/png" href="/res/favicon-cute.png">
+
+</head>
+<body>
+
+    <label class="switch">
+        <span class="switch-text">😇</span>
+        <input type="checkbox">
+        <span class="slider"></span>
+    </label>
+
+    <div id="gtv-screen">
+        <div id="gtv-anime-girl">
+            <img id="sunny-image" src="res/sunny-default.png">
+        </div>
+
+        <!--div for the connected users-->
+        <div id="gtv-connected-users">
+            <p id="gtv-connected-users-text">gremblins:</p>
+            <div id="gtv-connected-users-list">
+            </div>
+        </div>
+        
+        <div class="gtv-chat">
+            <div class="chat-messages" id="msg-box">
+            </div>
+            <div class="chat-input">
+              <input type="text" id="text-input-element"/ autofocus="true">
+              <button id="send-message">send</button>
+            </div>
+          </div>
+    </div>
+
+    <span id="dance-gif">
+        <img src="res/dance.gif" id="party-hard">
+        <img src="res/invert.gif" id="party-hard-invert" visibility="hidden">
+    </span>
+
+    <div 
+
+    <footer id="gtv-footer">
+        <!-- ATTENTION -->
+        <!-- UPDATE sf-version EVERY RELEASE -->    
+        <p id="gtv-version">/(^人^)\ gremlins.tv ヽ(⌒▽⌒)ﾉ</p>
+        <!-- <a id="sf-notes" href="https://github.com/spacefreg/spacefrogs/releases" target="_blank">patch notes</a> -->
+        <!-- also don't forget to do a release changelog on gh -->
+
+        <a id="twitter" href="https://twitter.com/cutenmarspilled" target="_blank">twitter</a>
+    </footer>
+
+
+    <!-- entry point for client-side code -->
+    <script type="module" defer src="client/client.js"></script>
+
+</body>
+</html>

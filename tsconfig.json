@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./src/server"
+    },
+    {
+      "path": "./src/public/client"
+    },
+    {
+      "path": "./src/public/core"
+    }
+  ]
+}

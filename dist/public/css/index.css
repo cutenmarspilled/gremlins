@@ -1,0 +1,181 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--light-background);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  /* cursor: url('res/images/ui/cursordefault.png'), default; */
+}
+
+:root {
+  --light-background: rgb(255, 240, 230);
+  --light-text: black;
+  --dark-background: rgb(25, 31, 45);
+  --dark-text: white;
+  --button-background: #d4aaa8;
+  --chatbox-background: #fff;
+  --chat-window-background: #ffc9ef;
+  --message-text: #141e23;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+body {
+  background-color: var(--light-background);
+  transition: background-color 0.5s, color 0.5s;
+}
+
+h1 {
+  color: var(--light-text);
+}
+
+#sunny-image {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+}
+
+#gtv-version {
+  margin: 0px;
+}
+
+#twitter {
+  color: rgb(51, 167, 255);
+  margin: 0 auto;
+}
+
+.gtv-chat {
+  width: 50%;
+  margin: auto;
+  display: flex;
+  font-size: 14px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 90vh;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px); /* subtract the height of the input box */
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--light-background);
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.message {
+  color: var(--message-text);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: var(--chat-window-background);
+}
+
+.chat-input {
+  display: flex;
+  width: 100%;
+  background-color: var(--chatbox-background);
+  border-radius: 10px;
+}
+
+input {
+  outline: none;
+}
+
+.chat-input input[type="text"] {
+  background-color: var(--chatbox-background);
+  color: var(--message-text);
+  flex: 1;
+  font-size: 14px;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  background-color: var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.chat-input button::before {
+  background-color: var(--button-background);
+}
+
+.chat-input button:hover:before {
+  filter: brightness(0.8);
+}
+
+#text-input-element {
+  background-color: var(--chatbox-background);
+  color: var(--message-text);
+}
+
+#gtv-footer {
+  position: fixed;
+  font-size: 10px;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  color: var(--light-text);
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+#dance-gif {
+  user-select: none;
+  position: fixed;
+  bottom: 180px;
+  left: 10px;
+  transition: background-color 0.5s, color 0.5s;
+  transition-delay: 0.5s, 0.5s;
+}
+
+#party-hard,
+#party-hard-invert {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#party-hard-invert {
+  visibility: hidden;
+}
+
+#gtv-connected-users {
+  background-color: rgb(255, 193, 242);
+  border-radius: 10px;
+
+  display: inline-block;
+  position: absolute;
+  left: 1%;
+  top: 10%;
+}
+
+#gtv-connected-users p {
+  margin-left: 5px;
+}
+
+#gtv-connected-users-list {
+  display: flex;
+  flex-direction: column;
+}
+
+#gtv-connected-users-list p {
+  background-color: rgb(255, 228, 241);
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
