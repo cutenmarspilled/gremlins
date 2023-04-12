@@ -25,7 +25,7 @@ class Server {
 
   public run(): void {
     this.httpServer.listen(this.port, () => {
-      console.log(`uwu listening on localhost:${this.port}`);
+      console.log(`uwu listening on port ${this.port}`);
     });
   }
 }

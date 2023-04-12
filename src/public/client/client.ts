@@ -6,7 +6,6 @@ import gtvMessage from "../core/messages/gtvmessage.js";
 
 import gtvWelcome from "../core/messages/gtvwelcome.js";
 
-import UserCache from "../core/utils/usercache.js";
 
 import User from "../core/user.js";
 
@@ -93,9 +92,6 @@ toggle.addEventListener("change", function () {
     switchText.style.color = "var(--light-text)";
     sendButton.style.color = "var(--light-text)";
 
-    // find the input box placeholder set and set it to aliceblue
-    // set the placeholder text color to a transparent aliceblue
-
     danceGif.style.visibility = "hidden";
     invertGif.style.visibility = "visible";
   } else {
@@ -140,13 +136,16 @@ socket.on("gs-welcome", (msg: gtvWelcome) => {
   console.log(`ayy we got some users: ${users.length}`);
 
   for (let i = 0; i < users.length; i++) {
-    UserCache.addUser(users[i]);
+
+    if (users[i].name != selfName) {
+      const userEl = document.createElement('p');
+      userEl.className = "user";
+      userEl.textContent = "anon " + users[i].name;
+      connectedUsers.appendChild(userEl);
+    }
   }
-
-  gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-  console.log(`UserCache: ${UserCache.getUsers().length} user length`);
-
-  updateUserCache();
+  gremlinCountText.textContent = 'gremlins: ' + users.length;
+  // updateUserCache();
 });
 
 socket.on("gs-message", (data: gtvMessage) => {
@@ -155,17 +154,18 @@ socket.on("gs-message", (data: gtvMessage) => {
 
   //let time = unixToLocaleDateTime(data.timestamp);
   let time = new Date(data.timestamp);
-  message.textContent = `(${time.toLocaleDateString()}: ${time.toLocaleTimeString()})[${
+  message.textContent = `(${time.toLocaleTimeString()})[${
     data.name
   }]:${data.message}`;
 
-  if (data.name == selfName) {
-    message.style.color = "red";
-  }
+  // if (data.name == selfName) {
+  //   message.style.color = "red";
+  // }
   document.getElementById("msg-box")?.appendChild(message);
 });
 
-socket.on("gs-user-joined", (name: string) => {
+socket.on("gs-user-joined", (name: string, userList: Array<User>) => {
+  console.log(`SELF NAME: ${selfName}, NEW CONNECT:${name}`);
   const message = document.createElement("div");
   message.className = "message";
 
@@ -176,46 +176,37 @@ socket.on("gs-user-joined", (name: string) => {
   if (name === selfName) {
     message.textContent = `anon ${name} (You) joined`;
     user.textContent += " (You)";
+    console.log(`adding user YOU (${name}/${selfName})`);
   } else {
     message.textContent = `anon ${name} joined`;
-
-    let newUser = new User(name, socket.id);
-    UserCache.addUser(newUser);
+    console.log(`adding NON-YOU user ${name}`);
   }
 
   document.getElementById("msg-box")?.appendChild(message);
 
   connectedUsers.appendChild(user);
-  gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-  updateUserCache();
+
+  gremlinCountText.textContent = 'gremlins: ' + userList.length;
 });
 
-socket.on("gs-user-left", (name: string, id: string) => {
+socket.on("gs-user-left", (name: string, id: string, userList: Array<User> ) => {
+  console.log(`user ${name} LEFT`);
   const message = document.createElement("div");
   message.className = "message";
   message.textContent = `anon ${name} left`;
   document.getElementById("msg-box")?.appendChild(message);
 
-  let user = UserCache.getUserBySocket(id)!;
-  UserCache.removeUser(user);
-  gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-  updateUserCache();
-});
 
-function updateUserCache(): void {
-  connectedUsers.innerHTML = "";
-  let users = UserCache.getUsers();
-  for (let i = 0; i < users.length; i++) {
-    const user = document.createElement("p");
-    user.className = "user";
-    if (users[i].name === selfName) {
-      user.textContent = "anon " + users[i].name + " (You)";
-    } else {
-      user.textContent = "anon " + users[i].name;
+  let pChildren = connectedUsers.querySelectorAll('p');
+  
+  for (let p of pChildren) {
+    if (p.textContent!.includes(name)) {
+      p.remove();
+      break;
     }
-    connectedUsers.appendChild(user);
   }
-}
+  gremlinCountText.textContent = 'gremlins: ' + userList.length;
+});
 
 function unixToLocaleDateTime(unixTimestamp: number) {
   // Convert Unix timestamp to milliseconds

@@ -2,8 +2,6 @@
 import { io } from "https://cdn.socket.io/4.3.0/socket.io.esm.min.js";
 const socket = io();
 import gtvMessage from "../core/messages/gtvmessage.js";
-import UserCache from "../core/utils/usercache.js";
-import User from "../core/user.js";
 const selfID = socket.id;
 let selfName = "";
 const toggle = document.querySelector(".switch input");
@@ -43,8 +41,6 @@ toggle.addEventListener("change", function () {
         switchText.textContent = "😈";
         switchText.style.color = "var(--light-text)";
         sendButton.style.color = "var(--light-text)";
-        // find the input box placeholder set and set it to aliceblue
-        // set the placeholder text color to a transparent aliceblue
         danceGif.style.visibility = "hidden";
         invertGif.style.visibility = "visible";
     }
@@ -76,24 +72,29 @@ socket.on("gs-welcome", (msg) => {
     console.log(`server says welcome: ${selfName}`);
     console.log(`ayy we got some users: ${users.length}`);
     for (let i = 0; i < users.length; i++) {
-        UserCache.addUser(users[i]);
+        if (users[i].name != selfName) {
+            const userEl = document.createElement('p');
+            userEl.className = "user";
+            userEl.textContent = "anon " + users[i].name;
+            connectedUsers.appendChild(userEl);
+        }
     }
-    gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-    console.log(`UserCache: ${UserCache.getUsers().length} user length`);
-    updateUserCache();
+    gremlinCountText.textContent = 'gremlins: ' + users.length;
+    // updateUserCache();
 });
 socket.on("gs-message", (data) => {
     const message = document.createElement("div");
     message.className = "message";
     //let time = unixToLocaleDateTime(data.timestamp);
     let time = new Date(data.timestamp);
-    message.textContent = `(${time.toLocaleDateString()}: ${time.toLocaleTimeString()})[${data.name}]:${data.message}`;
-    if (data.name == selfName) {
-        message.style.color = "red";
-    }
+    message.textContent = `(${time.toLocaleTimeString()})[${data.name}]:${data.message}`;
+    // if (data.name == selfName) {
+    //   message.style.color = "red";
+    // }
     document.getElementById("msg-box")?.appendChild(message);
 });
-socket.on("gs-user-joined", (name) => {
+socket.on("gs-user-joined", (name, userList) => {
+    console.log(`SELF NAME: ${selfName}, NEW CONNECT:${name}`);
     const message = document.createElement("div");
     message.className = "message";
     const user = document.createElement("p");
@@ -102,42 +103,31 @@ socket.on("gs-user-joined", (name) => {
     if (name === selfName) {
         message.textContent = `anon ${name} (You) joined`;
         user.textContent += " (You)";
+        console.log(`adding user YOU (${name}/${selfName})`);
     }
     else {
         message.textContent = `anon ${name} joined`;
-        let newUser = new User(name, socket.id);
-        UserCache.addUser(newUser);
+        console.log(`adding NON-YOU user ${name}`);
     }
     document.getElementById("msg-box")?.appendChild(message);
     connectedUsers.appendChild(user);
-    gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-    updateUserCache();
+    gremlinCountText.textContent = 'gremlins: ' + userList.length;
 });
-socket.on("gs-user-left", (name, id) => {
+socket.on("gs-user-left", (name, id, userList) => {
+    console.log(`user ${name} LEFT`);
     const message = document.createElement("div");
     message.className = "message";
     message.textContent = `anon ${name} left`;
     document.getElementById("msg-box")?.appendChild(message);
-    let user = UserCache.getUserBySocket(id);
-    UserCache.removeUser(user);
-    gremlinCountText.textContent = `gremblins: ${UserCache.getUsers().length}`;
-    updateUserCache();
-});
-function updateUserCache() {
-    connectedUsers.innerHTML = "";
-    let users = UserCache.getUsers();
-    for (let i = 0; i < users.length; i++) {
-        const user = document.createElement("p");
-        user.className = "user";
-        if (users[i].name === selfName) {
-            user.textContent = "anon " + users[i].name + " (You)";
+    let pChildren = connectedUsers.querySelectorAll('p');
+    for (let p of pChildren) {
+        if (p.textContent.includes(name)) {
+            p.remove();
+            break;
         }
-        else {
-            user.textContent = "anon " + users[i].name;
-        }
-        connectedUsers.appendChild(user);
     }
-}
+    gremlinCountText.textContent = 'gremlins: ' + userList.length;
+});
 function unixToLocaleDateTime(unixTimestamp) {
     // Convert Unix timestamp to milliseconds
     var timestampInMs = unixTimestamp * 1000;
