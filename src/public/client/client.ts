@@ -132,6 +132,7 @@ chatInput.addEventListener("keydown", (event) => {
 socket.on("gs-welcome", (msg: gtvWelcome) => {
   selfName = msg.selfName;
   const users = msg.users;
+  const messageList = msg.msgs;
   console.log(`server says welcome: ${selfName}`);
   console.log(`ayy we got some users: ${users.length}`);
 
@@ -145,22 +146,30 @@ socket.on("gs-welcome", (msg: gtvWelcome) => {
     }
   }
   gremlinCountText.textContent = 'gremlins: ' + users.length;
-  // updateUserCache();
+
+  for (let i = 0; i < messageList.length; i++) {
+    
+    //tay 4-13-23 much of this is a duplicate of message creation code upon a gs-message. prolly turn it into a neat lil function later
+    const message = document.createElement("div");
+    message.className = "message";
+    let time = new Date(messageList[i].timestamp).toLocaleTimeString();
+    const formattedTimeString = time.slice(0, time.length - 6) + time.slice(-3);
+    message.textContent = `(${formattedTimeString})[${
+      messageList[i].name}]:${messageList[i].message}`;
+      document.getElementById("msg-box")?.appendChild(message);
+  }
 });
 
 socket.on("gs-message", (data: gtvMessage) => {
   const message = document.createElement("div");
   message.className = "message";
 
-  //let time = unixToLocaleDateTime(data.timestamp);
-  let time = new Date(data.timestamp);
-  message.textContent = `(${time.toLocaleTimeString()})[${
+  let time = new Date(data.timestamp).toLocaleTimeString();
+  const formattedTimeString = time.slice(0, time.length - 6) + time.slice(-3);
+  message.textContent = `(${formattedTimeString})[${
     data.name
   }]:${data.message}`;
 
-  // if (data.name == selfName) {
-  //   message.style.color = "red";
-  // }
   document.getElementById("msg-box")?.appendChild(message);
 });
 
