@@ -52,6 +52,8 @@ const gremlinCountText = document.getElementById(
   "gtv-connected-users-text"
 ) as HTMLSpanElement;
 
+const chatMessages = document.getElementById('msg-box') as HTMLDivElement;
+
 switchText.onmousedown = function () {
   return false;
 };
@@ -88,6 +90,8 @@ toggle.addEventListener("change", function () {
     );
     document.documentElement.style.setProperty("--message-text", "aliceblue");
 
+    document.documentElement.style.setProperty("--gremlin-name-background", "#323b6b");
+
     switchText.textContent = "😈";
     switchText.style.color = "var(--light-text)";
     sendButton.style.color = "var(--light-text)";
@@ -114,6 +118,8 @@ toggle.addEventListener("change", function () {
     );
     document.documentElement.style.setProperty("--message-text", "#141e23");
 
+    document.documentElement.style.setProperty("--gremlin-name-background", "#eaafda");
+
     switchText.textContent = "😇";
     switchText.style.color = "var(--light-text)";
     sendButton.style.color = "var(--dark-text)";
@@ -134,7 +140,6 @@ socket.on("gs-welcome", (msg: gtvWelcome) => {
   const users = msg.users;
   const messageList = msg.msgs;
   console.log(`server says welcome: ${selfName}`);
-  console.log(`ayy we got some users: ${users.length}`);
 
   for (let i = 0; i < users.length; i++) {
 
@@ -149,14 +154,14 @@ socket.on("gs-welcome", (msg: gtvWelcome) => {
 
   for (let i = 0; i < messageList.length; i++) {
     
-    //tay 4-13-23 much of this is a duplicate of message creation code upon a gs-message. prolly turn it into a neat lil function later
+    //tay 4-13-23 - much of this is a duplicate of message creation code upon a gs-message. prolly turn it into a neat lil function later
     const message = document.createElement("div");
     message.className = "message";
     let time = new Date(messageList[i].timestamp).toLocaleTimeString();
     const formattedTimeString = time.slice(0, time.length - 6) + time.slice(-3);
     message.textContent = `(${formattedTimeString})[${
       messageList[i].name}]:${messageList[i].message}`;
-      document.getElementById("msg-box")?.appendChild(message);
+      chatMessages.appendChild(message);
   }
 });
 
@@ -170,11 +175,13 @@ socket.on("gs-message", (data: gtvMessage) => {
     data.name
   }]:${data.message}`;
 
-  document.getElementById("msg-box")?.appendChild(message);
+  chatMessages.appendChild(message);
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
 });
 
 socket.on("gs-user-joined", (name: string, userList: Array<User>) => {
-  console.log(`SELF NAME: ${selfName}, NEW CONNECT:${name}`);
   const message = document.createElement("div");
   message.className = "message";
 
@@ -185,10 +192,8 @@ socket.on("gs-user-joined", (name: string, userList: Array<User>) => {
   if (name === selfName) {
     message.textContent = `anon ${name} (You) joined`;
     user.textContent += " (You)";
-    console.log(`adding user YOU (${name}/${selfName})`);
   } else {
     message.textContent = `anon ${name} joined`;
-    console.log(`adding NON-YOU user ${name}`);
   }
 
   document.getElementById("msg-box")?.appendChild(message);
@@ -214,6 +219,7 @@ socket.on("gs-user-left", (name: string, id: string, userList: Array<User> ) => 
       break;
     }
   }
+  //tay 4/13/23 - currently the userList isn't stored anywhere on the client, should def fix that
   gremlinCountText.textContent = 'gremlins: ' + userList.length;
 });
 

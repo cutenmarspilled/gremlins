@@ -1,0 +1,18 @@
+body {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: rgb(53, 53, 155) rgb(144, 173, 216); /* scroll thumb and track */
+  }
+  
+  /* Style the scrollbar for WebKit */
+  ::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgb(144, 173, 216);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgb(53, 53, 155);
+  }
