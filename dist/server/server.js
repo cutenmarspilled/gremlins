@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const distPath = path.dirname(__dirname);
 class Server {
     constructor(port) {
-        this.port = port;
+        this.port = process.env.PORT || port;
         const expressApp = express();
         expressApp.use(express.static(path.join(distPath, "public")));
         this.httpServer = http.createServer(expressApp);

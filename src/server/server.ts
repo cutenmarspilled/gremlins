@@ -12,10 +12,12 @@ const distPath = path.dirname(__dirname);
 
 class Server {
   private httpServer: http.Server;
+  private port: string | number;
   private io: socketIO.Server;
   private chatServer: ChatServer;
 
-  constructor(private port: number) {
+  constructor(port: number) {
+    this.port = process.env.PORT || port;
     const expressApp = express();
     expressApp.use(express.static(path.join(distPath, "public")));
     this.httpServer = http.createServer(expressApp);
