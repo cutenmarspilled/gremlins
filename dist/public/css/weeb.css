@@ -1,0 +1,42 @@
+html {
+    background-color:rgb(180, 170, 160);
+}
+
+#tay-input, #sen-input {
+  border-radius: 10px;
+}
+.container {
+  display: flex; 
+  justify-content: center; 
+  align-items: flex-start;
+  text-align: center;
+  margin: 20px auto;
+  width: 40%;
+}
+
+
+
+.column {
+  flex: 1;
+  padding: 10px;
+}
+.user-icon {
+  border-radius: 10px;
+  margin: auto;
+}
+
+input {
+  width: 100%;
+  padding: 5px; 
+  border: 1px solid #ccc; 
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+
+li {
+  margin: 5px;
+}

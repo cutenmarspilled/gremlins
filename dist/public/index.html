@@ -16,6 +16,8 @@
 </head>
 <body>
 
+    <!-- <button onclick="window.location.href='weeb.html'">CLICK TO ENTER THE WEEB ZONE</button> -->
+
     <label class="switch">
         <span class="switch-text">😇</span>
         <input type="checkbox">
@@ -23,26 +25,8 @@
     </label>
 
     <div id="gtv-screen">
-        <div id="gtv-anime-girl">
-            <img id="sunny-image" src="res/sunny-default.png">
-        </div>
-
-        <!--div for the connected users-->
-        <div id="gtv-connected-users">
-            <p id="gtv-connected-users-text">gremblins:</p>
-            <div id="gtv-connected-users-list">
-            </div>
-        </div>
-        
-        <div class="gtv-chat">
-            <div class="chat-messages" id="msg-box">
-            </div>
-            <div class="chat-input">
-              <input type="text" id="text-input-element"/ autofocus="true">
-              <button id="send-message">send</button>
-            </div>
-          </div>
-    </div>
+        <canvas id="main-canvas"></canvas>
+    </div> 
 
     <span id="dance-gif">
         <img src="res/dance.gif" id="party-hard">
@@ -54,14 +38,12 @@
     <footer id="gtv-footer">
         <!-- ATTENTION -->
         <!-- UPDATE sf-version EVERY RELEASE -->    
-        <p id="gtv-version">/(^人^)\ gremlins.tv ヽ(⌒▽⌒)ﾉ</p>
+        <p id="gtv-version">gremlins.tv</p>
         <!-- <a id="sf-notes" href="https://github.com/spacefreg/spacefrogs/releases" target="_blank">patch notes</a> -->
         <!-- also don't forget to do a release changelog on gh -->
 
-        <a id="twitter" href="https://twitter.com/cutenmarspilled" target="_blank">twitter</a>
+        <!-- <a id="twitter" href="https://twitter.com/cutenmarspilled" target="_blank">twitter</a> -->
     </footer>
-
-
     <!-- entry point for client-side code -->
     <script type="module" defer src="client/client.js"></script>
 

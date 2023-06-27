@@ -4,6 +4,7 @@ import express from "express";
 import http from "http";
 import * as socketIO from "socket.io";
 import ChatServer from "./chatserver.js";
+import WeebServer from "./weebserver.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.dirname(__dirname);
@@ -15,6 +16,7 @@ class Server {
         this.httpServer = http.createServer(expressApp);
         this.io = new socketIO.Server(this.httpServer);
         this.chatServer = new ChatServer(this.io);
+        this.weebServer = new WeebServer(this.io);
     }
     run() {
         this.httpServer.listen(this.port, () => {
